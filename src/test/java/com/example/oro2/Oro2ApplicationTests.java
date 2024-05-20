@@ -127,48 +127,48 @@ class Oro2ApplicationTests {
     @Test
     void getMovieListByCinemaHallId() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Movie> moviePage = repoMovie.findMovieByHall(cinemaHall1.getId(), pageable);
+        Page<MovieDTO> moviePage = repoMovie.findMovieByHall(cinemaHall1.getId(), pageable);
         assertEquals(2, moviePage.getTotalElements());
     }
 
     @Test
     void findScreeningNumberByCinemaHallId() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Screening> screeningPage = repoScreening.findByHallId(cinemaHall1.getId(), pageable);
+        Page<ScreeningDTO> screeningPage = repoScreening.findByHallId(cinemaHall1.getId(), pageable);
         assertEquals(2, screeningPage.getTotalElements());
     }
 
     @Test
     void findScreeningNumberByMovieId() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Screening> screeningPage = repoScreening.findByMovieId(movie2.getId(), pageable);
+        Page<ScreeningDTO> screeningPage = repoScreening.findByMovieId(movie2.getId(), pageable);
         assertEquals(1, screeningPage.getTotalElements());
     }
 
     @Test
     void findScreeningsByMovieName() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Screening> screeningPage = repoScreening.findByMovieTitle(movie2.getTitle(), pageable);
+        Page<ScreeningDTO> screeningPage = repoScreening.findByMovieTitle(movie2.getTitle(), pageable);
         assertEquals(1, screeningPage.getTotalElements());
     }
 
     @Test
     void findUsersByScreeningId() {
-        List<User> userList = repoScreening.findUsersByScreeningId(screening3.getId());
+        List<UserDTO> userList = repoScreening.findUsersByScreeningId(screening3.getId());
         assertEquals(2, userList.size());
     }
 
     @Test
     void findScreeningsByUserId() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Screening> screeningPage = repoUser.findScreeningsByUserId(user1.getId(), pageable);
+        Page<ScreeningDTO> screeningPage = repoUser.findScreeningsByUserId(user1.getId(), pageable);
         assertEquals(2, screeningPage.getTotalElements());
     }
 
     @Test
     void findScreeningsByUserLogin() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Screening> screeningPage = repoUser.findScreeningsByUserLogin(user2.getLogin(), pageable);
+        Page<ScreeningDTO> screeningPage = repoUser.findScreeningsByUserLogin(user2.getLogin(), pageable);
         assertEquals(1, screeningPage.getTotalElements());
     }
 
