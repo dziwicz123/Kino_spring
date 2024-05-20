@@ -1,15 +1,18 @@
 package com.example.oro2;
 
 import com.example.oro2.cinema.*;
+import com.example.oro2.dto.*;
 import com.example.oro2.repo.*;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -123,62 +126,67 @@ class Oro2ApplicationTests {
 
     @Test
     void getMovieListByCinemaHallId() {
-        List<Movie> movieList = repoMovie.findMovieByHall(cinemaHall1.getId());
-        assertEquals(2,movieList.size());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Movie> moviePage = repoMovie.findMovieByHall(cinemaHall1.getId(), pageable);
+        assertEquals(2, moviePage.getTotalElements());
     }
 
     @Test
     void findScreeningNumberByCinemaHallId() {
-        Long id = cinemaHall1.getId();
-        List<Screening> screeningList = repoScreening.findByHallId(cinemaHall1.getId());
-        assertEquals(2,screeningList.size());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Screening> screeningPage = repoScreening.findByHallId(cinemaHall1.getId(), pageable);
+        assertEquals(2, screeningPage.getTotalElements());
     }
 
     @Test
     void findScreeningNumberByMovieId() {
-        List<Screening> screeningList = repoScreening.findByMovieId(movie2.getId());
-        assertEquals(1,screeningList.size());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Screening> screeningPage = repoScreening.findByMovieId(movie2.getId(), pageable);
+        assertEquals(1, screeningPage.getTotalElements());
     }
 
     @Test
     void findScreeningsByMovieName() {
-        List<Screening> screeningList = repoScreening.findByMovieTitle(movie2.getTitle());
-        assertEquals(1,screeningList.size());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Screening> screeningPage = repoScreening.findByMovieTitle(movie2.getTitle(), pageable);
+        assertEquals(1, screeningPage.getTotalElements());
     }
 
     @Test
     void findUsersByScreeningId() {
         List<User> userList = repoScreening.findUsersByScreeningId(screening3.getId());
-        assertEquals(2,userList.size());
+        assertEquals(2, userList.size());
     }
 
     @Test
     void findScreeningsByUserId() {
-        List<Screening> screeningList = repoUser.findScreeningsByUserId(user1.getId());
-        assertEquals(2,screeningList.size());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Screening> screeningPage = repoUser.findScreeningsByUserId(user1.getId(), pageable);
+        assertEquals(2, screeningPage.getTotalElements());
     }
 
     @Test
     void findScreeningsByUserLogin() {
-        List<Screening> screeningList = repoUser.findScreeningsByUserLogin(user2.getLogin());
-        assertEquals(1,screeningList.size());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Screening> screeningPage = repoUser.findScreeningsByUserLogin(user2.getLogin(), pageable);
+        assertEquals(1, screeningPage.getTotalElements());
     }
 
     @Test
     void getNumberOfViewersByScreeningId() {
         Long viewerNumber = repoScreening.countTicketsByScreeningId(screening3.getId());
-        assertEquals(4,viewerNumber);
+        assertEquals(4, viewerNumber);
     }
 
     @Test
     void getNumberOfCinemaHallsByMovieId() {
         Integer number = repoCinemaHall.countDistinctHallsByMovieId(movie1.getId());
-        assertEquals(2,number);
+        assertEquals(2, number);
     }
 
     @Test
     void getNumberOfSeatsByUserInTime() {
-        Long userId = user2.getId(); // Get user ID, ensure user2 is not null
+        Long userId = user2.getId();
         LocalDateTime start = LocalDateTime.of(2024, 4, 24, 13, 0);
         LocalDateTime end = LocalDateTime.of(2024, 4, 24, 19, 0);
         Integer number = repoUser.countScreeningsByUserIdAndTimeRange(userId, start, end);
